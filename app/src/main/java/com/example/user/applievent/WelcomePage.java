@@ -7,7 +7,7 @@ public class WelcomePage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //test commit numéro 2
+        //test commit numéro 3
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
     }
