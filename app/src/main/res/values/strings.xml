@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Appli Event</string>
+    <string name="texte_accueil">Welcome to this Awesome Homepage</string>
+    <string name="description_image_test">"ici on mettra les pubs des sponsors</string>
+    <string name="accueil_central_button">NEW EVENT !</string>
 </resources>
