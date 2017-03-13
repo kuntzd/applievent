@@ -1,5 +1,6 @@
 package com.example.user.applievent;
 
+import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -18,58 +19,51 @@ import static junit.framework.Assert.assertEquals;
 @RunWith(AndroidJUnit4.class)
 public class UserDataBaseInstrumentedTest {
     @Test
-    public void TestUserManager(){
+    public void TestUserManager() {
         String dbName = "DataBaseOnlyForTest";
-
-        UserManager userManager = new UserManager(InstrumentationRegistry.getTargetContext(), dbName);
-
-        User userTest = new User("pseudo", "mail", "superpwd");
+        Context context = InstrumentationRegistry.getTargetContext();
+        UserManager userManager = new UserManager(context, dbName);
         userManager.open();
         try {
+            User userTest = new User("pseudo", "mail", "superpwd");
+
             int count = userManager.getCount();
-            assertEquals(count, 0);
-            try {
-                userManager.insertUser(userTest);
-            } catch (Exception e) {
-                StringWriter sw = new StringWriter();
-                PrintWriter pw = new PrintWriter(sw);
-                e.printStackTrace(pw);
-                Assert.fail("Error while inserting the user "+ userTest +" into the dataBase.\nOriginal error message :" + e.getMessage() +"\nStack trace : " + sw.toString());
-            }
+            assertEquals(0, count);
+
+            userTest = userManager.insertUser(userTest);
             count = userManager.getCount();
             if (count != 1) {
-                Assert.fail("No user found in the database, expected "+ userTest +" to have been inserted into the database.");
+                Assert.fail("No user found in the database, expected " + userTest + " to have been inserted into the database.");
             }
+
             User userFromDB = userManager.getUserWithMail(userTest.getMail());
             User updatedUser = new User(userFromDB.getId(), "ModifiedPseudo", "ModifiedMail", userFromDB.getPwd());
             if (userFromDB != null) {
-                try {
-                    userManager.updateUser(updatedUser);
-                } catch (Exception e) {
-                    StringWriter sw = new StringWriter();
-                    PrintWriter pw = new PrintWriter(sw);
-                    e.printStackTrace(pw);
-                    Assert.fail("Error while updating the user "+ userTest +" into the dataBase.\nOriginal error message :" + e.getMessage() +"\nStack trace : " + sw.toString());
-                }
+                userManager.updateUser(updatedUser);
             } else {
-                Assert.fail("No user with mail "+userTest.getMail()+"found in the database, expected "+ userTest +" to have been inserted into the database.");
+                Assert.fail("No user with mail " + userTest.getMail() + "found in the database, expected " + userTest + " to have been inserted into the database.");
             }
 
             User modifiedUser = userManager.getUserWithPseudo(updatedUser.getPseudo());
             if (modifiedUser != null) {
                 userManager.removeUser(modifiedUser);
             } else {
-                Assert.fail("No user with mail "+updatedUser.getPseudo()+"found in the database, expected "+ updatedUser +" to have been inserted into the database.");
+                Assert.fail("No user with mail " + updatedUser.getPseudo() + "found in the database, expected " + updatedUser + " to have been inserted into the database.");
             }
             User inexistantUser = userManager.getUserWithMail(updatedUser.getMail());
             if (inexistantUser != null) {
-                Assert.fail("Found user "+ inexistantUser +" in the database, expected the user to have been removed from the database.");
+                Assert.fail("Found user " + inexistantUser + " in the database, expected the user to have been removed from the database.");
             }
             count = userManager.getCount();
-            assertEquals(count, 0);
+            assertEquals(0, count);
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            Assert.fail("Test error.\nOriginal error message :" + e.getMessage() + "\nStack trace : " + sw.toString());
         } finally {
             userManager.close();
+            context.deleteDatabase(dbName);
         }
     }
-
 }
