@@ -28,8 +28,8 @@ public class GroupDataBaseInstrumentedTest {
         groupManager.open();
         userManager.open();
         try {
-            User user1 = new User("pseudo1", "mail1", "superpwd1");
-            User user2 = new User("pseudo2", "mail2", "superpwd2");
+            User user1 = new User("Prenom1", "Nom1", "mail1", "superpwd1");
+            User user2 = new User("Prenom2", "Nom2", "mail2", "superpwd2");
 
             int count = groupManager.getCount();
             assertEquals(0, count);
@@ -46,28 +46,28 @@ public class GroupDataBaseInstrumentedTest {
                 Assert.fail("No user found in the database, expected " + groupTest + " to have been inserted into the database.");
             }
 
-            Group groupFromDB = groupManager.getGroupFromName(groupTest.getName(), userManager);
+            Group groupFromDB = groupManager.getGroupFromId(groupTest.getId(), userManager);
             Assert.assertEquals(2, groupFromDB.getAllUsers().size());
             EmptyGroup updatedGroup = new EmptyGroup(groupFromDB.getId(), "ModifiedName");
             if (groupFromDB != null) {
                 groupManager.updateGroup(updatedGroup);
                 groupManager.removeUserInGroup(updatedGroup.getId(), user1);
                 groupManager.removeUserInGroup(updatedGroup.getId(), user2);
-                groupManager.addUserInGroup(updatedGroup.getId(),"newPseudo", user1);
+                groupManager.addUserInGroup(updatedGroup.getId(), "newPseudo", user1);
             } else {
                 Assert.fail("No user with mail " + groupTest.getName() + "found in the database, expected " + groupTest + " to have been inserted into the database.");
             }
 
-            Group modifiedGroup = groupManager.getGroupFromName(updatedGroup.getName(), userManager);
+            Group modifiedGroup = groupManager.getGroupFromId(updatedGroup.getId(), userManager);
             Assert.assertEquals(1, modifiedGroup.getAllUsers().size());
             User userFromDb = modifiedGroup.getUserByPseudo("newPseudo");
-            Assert.assertEquals(userFromDb.getMail(),"mail1");
+            Assert.assertEquals(userFromDb.getMail(), "mail1");
             if (modifiedGroup != null) {
                 groupManager.removeGroup(modifiedGroup);
             } else {
                 Assert.fail("No user with mail " + modifiedGroup.getName() + "found in the database, expected " + modifiedGroup + " to have been inserted into the database.");
             }
-            Group inexistantGroup = groupManager.getGroupFromName(modifiedGroup.getName(), userManager);
+            Group inexistantGroup = groupManager.getGroupFromId(modifiedGroup.getId(), userManager);
             if (inexistantGroup != null) {
                 Assert.fail("Found user " + inexistantGroup + " in the database, expected the user to have been removed from the database.");
             }

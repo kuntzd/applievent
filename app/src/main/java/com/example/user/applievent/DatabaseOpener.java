@@ -12,8 +12,9 @@ public class DatabaseOpener extends SQLiteOpenHelper {
 
     private static final String CREATE_USER = "CREATE TABLE IF NOT EXISTS " + UserIds.TABLE_NAME + " ("
             + UserIds.COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + UserIds.COL_PSEUDO + " TEXT NOT NULL, "
-            + UserIds.COL_MAIL + " TEXT NOT NULL, "
+            + UserIds.COL_FIRSTNAME + " TEXT NOT NULL, "
+            + UserIds.COL_LASTNAME + " TEXT NOT NULL, "
+            + UserIds.COL_MAIL + " TEXT NOT NULL UNIQUE, "
             + UserIds.COL_PWD + " TEXT NOT NULL"
             +");";
 

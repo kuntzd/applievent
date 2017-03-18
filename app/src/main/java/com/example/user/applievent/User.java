@@ -6,20 +6,23 @@ package com.example.user.applievent;
 
 public class User {
     private int id;
-    private String pseudo;
+    private String firstName;
+    private String lastName;
     private String mail;
     private String pwd;
 
-    public User(int id, String pseudo, String mail, String pwd){
+    public User(int id, String firstName, String lastName, String mail, String pwd) {
         this.id = id;
-        this.pseudo = pseudo;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.mail = mail;
         this.pwd = pwd;
     }
 
-    public User(String pseudo, String mail, String pwd){
+    public User(String firstName, String lastName, String mail, String pwd) {
         this.id = -1;
-        this.pseudo = pseudo;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.mail = mail;
         this.pwd = pwd;
     }
@@ -28,8 +31,12 @@ public class User {
         return id;
     }
 
-    public String getPseudo() {
-        return pseudo;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public String getMail() {
@@ -40,7 +47,7 @@ public class User {
         return pwd;
     }
 
-    public String toString(){
-        return "id : "+id+"\npseudo : "+pseudo+"\nMail : "+mail;
+    public String toString() {
+        return "id : " + id + "\nFirst name : " + firstName + "\nLast name : " + lastName + "\nMail : " + mail;
     }
 }

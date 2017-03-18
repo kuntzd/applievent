@@ -6,7 +6,6 @@ import android.database.Cursor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -50,8 +49,8 @@ public class GroupManager extends Manager {
         return bdd.insert(UserInGroupIds.TABLE_NAME, null, values);
     }
 
-    public Group getGroupFromName(String name, UserManager userManager) throws Exception {
-        Cursor c = bdd.query(GroupIds.TABLE_NAME, new String[]{GroupIds.COL_ID, GroupIds.COL_NAME}, GroupIds.COL_NAME + " LIKE \"" + name + "\"", null, null, null, null);
+    public Group getGroupFromId(int id, UserManager userManager) throws Exception {
+        Cursor c = bdd.query(GroupIds.TABLE_NAME, new String[]{GroupIds.COL_ID, GroupIds.COL_NAME}, GroupIds.COL_ID + " = " + id, null, null, null, null);
         EmptyGroup emptyGroup = cursorToEmptyGroup(c);
         if(emptyGroup == null)
             return null;

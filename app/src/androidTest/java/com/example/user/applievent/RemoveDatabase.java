@@ -14,9 +14,10 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class RemoveDatabase {
     @Test
-    public void RemoveDB(){
-        String dbName = "DataBaseOnlyForTest";
+    public void RemoveDB() {
         Context context = InstrumentationRegistry.getTargetContext();
-        context.deleteDatabase(dbName);
+        String[] databaseList = context.databaseList();
+        for (int i = 0; i < databaseList.length; i++)
+            context.deleteDatabase(databaseList[i]);
     }
 }
