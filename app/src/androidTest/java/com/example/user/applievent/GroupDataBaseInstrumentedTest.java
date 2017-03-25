@@ -3,6 +3,7 @@ package com.example.user.applievent;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.telephony.PhoneNumberUtils;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,6 +22,7 @@ import static junit.framework.Assert.assertEquals;
 public class GroupDataBaseInstrumentedTest {
     @Test
     public void TestGroupManager() {
+        //PhoneNumberUtils = PhoneNumberUtils.normalizeNumber()
         String dbName = "DataBaseOnlyForTest";
         Context context = InstrumentationRegistry.getTargetContext();
         UserManager userManager = new UserManager(context, dbName);
@@ -28,8 +30,8 @@ public class GroupDataBaseInstrumentedTest {
         groupManager.open();
         userManager.open();
         try {
-            User user1 = new User("Prenom1", "Nom1", "mail1", "superpwd1");
-            User user2 = new User("Prenom2", "Nom2", "mail2", "superpwd2");
+            User user1 = new User("Prenom1", "Nom1", "0615842367", "pseudo1","superpwd1");
+            User user2 = new User("Prenom2", "Nom2", "0615842368", "pseudo2","superpwd2");
 
             int count = groupManager.getCount();
             assertEquals(0, count);
@@ -61,7 +63,7 @@ public class GroupDataBaseInstrumentedTest {
             Group modifiedGroup = groupManager.getGroupFromId(updatedGroup.getId(), userManager);
             Assert.assertEquals(1, modifiedGroup.getAllUsers().size());
             User userFromDb = modifiedGroup.getUserByPseudo("newPseudo");
-            Assert.assertEquals(userFromDb.getMail(), "mail1");
+            Assert.assertEquals(userFromDb.getNumber(), "0615842367");
             if (modifiedGroup != null) {
                 groupManager.removeGroup(modifiedGroup);
             } else {

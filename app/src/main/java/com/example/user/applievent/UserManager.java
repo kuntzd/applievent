@@ -19,7 +19,7 @@ public class UserManager extends Manager {
         if (c.getCount() > 1)
             throw new Exception("Retrieved " + c.getCount() + " users instead of 1");
         c.moveToFirst();
-        User user = new User(c.getInt(UserIds.COL_ID_NUM), c.getString(UserIds.COL_FIRSTNAME_NUM), c.getString(UserIds.COL_LASTNAME_NUM), c.getString(UserIds.COL_MAIL_NUM), c.getString(UserIds.COL_PWD_NUM));
+        User user = new User(c.getInt(UserIds.COL_ID_NUM), c.getString(UserIds.COL_FIRSTNAME_NUM), c.getString(UserIds.COL_LASTNAME_NUM), c.getString(UserIds.COL_NUMBER_NUM), c.getString(UserIds.COL_PSEUDO_NUM), c.getString(UserIds.COL_PWD_NUM));
         c.close();
         return user;
     }
@@ -27,7 +27,7 @@ public class UserManager extends Manager {
     private ArrayList<User> cursorToMultipleUser(Cursor c) throws Exception {
         ArrayList<User> result = new ArrayList<>();
         for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-            User user = new User(c.getInt(UserIds.COL_ID_NUM), c.getString(UserIds.COL_FIRSTNAME_NUM), c.getString(UserIds.COL_LASTNAME_NUM), c.getString(UserIds.COL_MAIL_NUM), c.getString(UserIds.COL_PWD_NUM));
+            User user = new User(c.getInt(UserIds.COL_ID_NUM), c.getString(UserIds.COL_FIRSTNAME_NUM), c.getString(UserIds.COL_LASTNAME_NUM), c.getString(UserIds.COL_NUMBER_NUM), c.getString(UserIds.COL_PSEUDO_NUM), c.getString(UserIds.COL_PWD_NUM));
             result.add(user);
         }
         c.close();
@@ -44,12 +44,13 @@ public class UserManager extends Manager {
             throw new Exception("Impossible to insert user with existing database identifier");
         values.put(UserIds.COL_FIRSTNAME, user.getFirstName());
         values.put(UserIds.COL_LASTNAME, user.getLastName());
-        values.put(UserIds.COL_MAIL, user.getMail());
+        values.put(UserIds.COL_NUMBER, user.getNumber());
+        values.put(UserIds.COL_PSEUDO, user.getPseudo());
         values.put(UserIds.COL_PWD, user.getPwd());
         long newId = bdd.insert(UserIds.TABLE_NAME, null, values);
         if (newId == -1)
             return null;
-        return new User((int) newId, user.getFirstName(), user.getLastName(), user.getMail(), user.getPwd());
+        return new User((int) newId, user.getFirstName(), user.getLastName(), user.getNumber(), user.getPseudo(), user.getPwd());
     }
 
     public int updateUser(User user) throws Exception {
@@ -58,7 +59,8 @@ public class UserManager extends Manager {
             throw new Exception("Impossible to update user with non-existing database identifier");
         values.put(UserIds.COL_FIRSTNAME, user.getFirstName());
         values.put(UserIds.COL_LASTNAME, user.getLastName());
-        values.put(UserIds.COL_MAIL, user.getMail());
+        values.put(UserIds.COL_NUMBER, user.getNumber());
+        values.put(UserIds.COL_PSEUDO, user.getPseudo());
         values.put(UserIds.COL_PWD, user.getPwd());
         return bdd.update(UserIds.TABLE_NAME, values, UserIds.COL_ID + " = " + user.getId(), null);
     }
@@ -75,33 +77,38 @@ public class UserManager extends Manager {
         String[] split = searchString.split(" ");
         if (split.length == 1) {
             String name = split[0];
-            Cursor c = bdd.query(UserIds.TABLE_NAME, new String[]{UserIds.COL_ID, UserIds.COL_FIRSTNAME, UserIds.COL_LASTNAME, UserIds.COL_MAIL, UserIds.COL_PWD}, UserIds.COL_FIRSTNAME + " LIKE \"" + name + "\"", null, null, null, null);
+            Cursor c = bdd.query(UserIds.TABLE_NAME, new String[]{UserIds.COL_ID, UserIds.COL_FIRSTNAME, UserIds.COL_LASTNAME, UserIds.COL_NUMBER, UserIds.COL_PSEUDO, UserIds.COL_PWD}, UserIds.COL_FIRSTNAME + " LIKE \"" + name + "\"", null, null, null, null);
             result.addAll(cursorToMultipleUser(c));
-            c = bdd.query(UserIds.TABLE_NAME, new String[]{UserIds.COL_ID, UserIds.COL_FIRSTNAME, UserIds.COL_LASTNAME, UserIds.COL_MAIL, UserIds.COL_PWD}, UserIds.COL_LASTNAME + " LIKE \"" + name + "\"", null, null, null, null);
+            c = bdd.query(UserIds.TABLE_NAME, new String[]{UserIds.COL_ID, UserIds.COL_FIRSTNAME, UserIds.COL_LASTNAME, UserIds.COL_NUMBER, UserIds.COL_PSEUDO, UserIds.COL_PWD}, UserIds.COL_LASTNAME + " LIKE \"" + name + "\"", null, null, null, null);
             result.addAll(cursorToMultipleUser(c));
             return result;
         }
         if (split.length > 1) {
             String firstName = split[0];
             String lastName = split[1];
-            Cursor c = bdd.query(UserIds.TABLE_NAME, new String[]{UserIds.COL_ID, UserIds.COL_FIRSTNAME, UserIds.COL_LASTNAME, UserIds.COL_MAIL, UserIds.COL_PWD}, UserIds.COL_FIRSTNAME + " LIKE \"" + firstName + "\" and " + UserIds.COL_LASTNAME + " LIKE \"" + lastName + "\"", null, null, null, null);
+            Cursor c = bdd.query(UserIds.TABLE_NAME, new String[]{UserIds.COL_ID, UserIds.COL_FIRSTNAME, UserIds.COL_LASTNAME, UserIds.COL_NUMBER, UserIds.COL_PSEUDO, UserIds.COL_PWD}, UserIds.COL_FIRSTNAME + " LIKE \"" + firstName + "\" and " + UserIds.COL_LASTNAME + " LIKE \"" + lastName + "\"", null, null, null, null);
             result.addAll(cursorToMultipleUser(c));
             firstName = split[1];
             lastName = split[0];
-            c = bdd.query(UserIds.TABLE_NAME, new String[]{UserIds.COL_ID, UserIds.COL_FIRSTNAME, UserIds.COL_LASTNAME, UserIds.COL_MAIL, UserIds.COL_PWD}, UserIds.COL_FIRSTNAME + " LIKE \"" + firstName + "\" and " + UserIds.COL_LASTNAME + " LIKE \"" + lastName + "\"", null, null, null, null);
+            c = bdd.query(UserIds.TABLE_NAME, new String[]{UserIds.COL_ID, UserIds.COL_FIRSTNAME, UserIds.COL_LASTNAME, UserIds.COL_NUMBER, UserIds.COL_PSEUDO, UserIds.COL_PWD}, UserIds.COL_FIRSTNAME + " LIKE \"" + firstName + "\" and " + UserIds.COL_LASTNAME + " LIKE \"" + lastName + "\"", null, null, null, null);
             result.addAll(cursorToMultipleUser(c));
             return result;
         }
         throw new Exception("Fatal error searching user " + searchString);
     }
 
-    public User getUserWithMail(String mail) throws Exception {
-        Cursor c = bdd.query(UserIds.TABLE_NAME, new String[]{UserIds.COL_ID, UserIds.COL_FIRSTNAME, UserIds.COL_LASTNAME, UserIds.COL_MAIL, UserIds.COL_PWD}, UserIds.COL_MAIL + " LIKE \"" + mail + "\"", null, null, null, null);
+    public User getUserWithNumber(String number) throws Exception {
+        Cursor c = bdd.query(UserIds.TABLE_NAME, new String[]{UserIds.COL_ID, UserIds.COL_FIRSTNAME, UserIds.COL_LASTNAME, UserIds.COL_NUMBER, UserIds.COL_PSEUDO, UserIds.COL_PWD}, UserIds.COL_NUMBER + " LIKE \"" + number + "\"", null, null, null, null);
+        return cursorToUser(c);
+    }
+
+    public User getUserWithPseudo(String pseudo) throws Exception {
+        Cursor c = bdd.query(UserIds.TABLE_NAME, new String[]{UserIds.COL_ID, UserIds.COL_FIRSTNAME, UserIds.COL_LASTNAME, UserIds.COL_NUMBER, UserIds.COL_PSEUDO, UserIds.COL_PWD}, UserIds.COL_PSEUDO + " LIKE \"" + pseudo + "\"", null, null, null, null);
         return cursorToUser(c);
     }
 
     public User getUser(int id) throws Exception {
-        Cursor c = bdd.query(UserIds.TABLE_NAME, new String[]{UserIds.COL_ID, UserIds.COL_FIRSTNAME, UserIds.COL_LASTNAME, UserIds.COL_MAIL, UserIds.COL_PWD}, UserIds.COL_ID + " = " + id, null, null, null, null);
+        Cursor c = bdd.query(UserIds.TABLE_NAME, new String[]{UserIds.COL_ID, UserIds.COL_FIRSTNAME, UserIds.COL_LASTNAME, UserIds.COL_NUMBER, UserIds.COL_PSEUDO, UserIds.COL_PWD}, UserIds.COL_ID + " = " + id, null, null, null, null);
         return cursorToUser(c);
     }
 

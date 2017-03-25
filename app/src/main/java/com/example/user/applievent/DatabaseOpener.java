@@ -14,7 +14,8 @@ public class DatabaseOpener extends SQLiteOpenHelper {
             + UserIds.COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + UserIds.COL_FIRSTNAME + " TEXT NOT NULL, "
             + UserIds.COL_LASTNAME + " TEXT NOT NULL, "
-            + UserIds.COL_MAIL + " TEXT NOT NULL UNIQUE, "
+            + UserIds.COL_NUMBER + " TEXT NOT NULL UNIQUE, "
+            + UserIds.COL_PSEUDO + " TEXT NOT NULL UNIQUE, "
             + UserIds.COL_PWD + " TEXT NOT NULL"
             +");";
 

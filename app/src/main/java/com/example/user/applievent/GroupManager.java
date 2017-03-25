@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,14 @@ public class GroupManager extends Manager {
         return result;
     }
 
+    private static Group BuildFromEmptyGroup(EmptyGroup emptyGroup, Collection<UserWithPseudo> users){
+        HashMap<String , User> group = new HashMap<>();
+        for(UserWithPseudo user : users){
+            group.put(user.getPseudo(), user.getUser());
+        }
+        return new Group(emptyGroup.getId(), emptyGroup.getName(), group);
+    }
+
     protected GroupManager(Context context, String dataBaseName) {
         super(context, dataBaseName);
     }
@@ -60,7 +69,7 @@ public class GroupManager extends Manager {
         for (UserInGroup userInGroup: userInGroups) {
             users.add(new UserWithPseudo(userInGroup.getPseudo(),userManager.getUser(userInGroup.getUserId())));
         }
-        return Group.BuildFromEmptyGroup(emptyGroup, users);
+        return BuildFromEmptyGroup(emptyGroup, users);
     }
 
     public Group insertGroup(Group group) throws Exception {

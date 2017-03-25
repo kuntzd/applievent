@@ -26,7 +26,7 @@ public class UserDataBaseInstrumentedTest {
         UserManager userManager = new UserManager(context, dbName);
         userManager.open();
         try {
-            User userTest = new User("Prenom", "Nom", "mail", "superpwd");
+            User userTest = new User("Prenom", "Nom", "0615842367", "pseudo", "superpwd");
 
             int count = userManager.getCount();
             assertEquals(0, count);
@@ -37,21 +37,25 @@ public class UserDataBaseInstrumentedTest {
                 Assert.fail("No user found in the database, expected " + userTest + " to have been inserted into the database.");
             }
 
-            User userFromDB = userManager.getUserWithMail(userTest.getMail());
-            User updatedUser = new User(userFromDB.getId(), "ModifiedPrenom", "ModifiedNom", "ModifiedMail", userFromDB.getPwd());
+            User userFromDB = userManager.getUserWithNumber(userTest.getNumber());
+            User updatedUser = new User(userFromDB.getId(), "ModifiedPrenom", "ModifiedNom", "0615842368", "ModifiedPseudo", userFromDB.getPwd());
             if (userFromDB != null) {
                 userManager.updateUser(updatedUser);
             } else {
-                Assert.fail("No user with mail " + userTest.getMail() + "found in the database, expected " + userTest + " to have been inserted into the database.");
+                Assert.fail("No user with number " + userTest.getNumber() + "found in the database, expected " + userTest + " to have been inserted into the database.");
             }
 
-            User newUser = new User("ModifiedPrenom", "ModifiedNom", "ModifiedMail", "pwd");
+            User newUser = new User("ModifiedPrenom", "ModifiedNom", "0615842368", "uselessPseudo", "pwd");
             newUser = userManager.insertUser(newUser);
             if (newUser != null)
-                Assert.fail("New user shouldn't have been add with already existant mail " + newUser.getMail());
-            newUser = new User("ModifiedPrenom", "ModifiedNom", "NewMail", "pwd");
+                Assert.fail("New user shouldn't have been add with already existant number " + newUser.getNumber());
+            newUser = new User("ModifiedPrenom", "ModifiedNom", "0606060606", "ModifiedPseudo", "pwd");
+            newUser = userManager.insertUser(newUser);
+            if (newUser != null)
+                Assert.fail("New user shouldn't have been add with already existant pseudo " + newUser.getPseudo());
+            newUser = new User("ModifiedPrenom", "ModifiedNom", "0615842369", "NewPseudo","pwd");
 
-            User invertedUser = new User("ModifiedNom", "ModifiedPrenom", "InvertedMail", "pwd");
+            User invertedUser = new User("ModifiedNom", "ModifiedPrenom", "0615842370", "NewPseudo2", "pwd");
             userManager.insertUser(newUser);
             userManager.insertUser(invertedUser);
 
@@ -62,7 +66,7 @@ public class UserDataBaseInstrumentedTest {
             User modifiedUser = null;
             for (int i = 0; i < modifiedUsers.size(); i++) {
                 User temporaryUser = modifiedUsers.get(i);
-                if (temporaryUser.getMail().equalsIgnoreCase(updatedUser.getMail())) {
+                if (temporaryUser.getPseudo().equalsIgnoreCase(updatedUser.getPseudo())) {
                     modifiedUser = temporaryUser;
                     break;
                 }
@@ -71,14 +75,14 @@ public class UserDataBaseInstrumentedTest {
             if (modifiedUser != null) {
                 userManager.removeUser(modifiedUser);
             } else {
-                Assert.fail("No user with mail " + updatedUser.getMail() + "found in the database, expected " + updatedUser + " to have been inserted into the database.");
+                Assert.fail("No user with pseudo " + updatedUser.getPseudo() + "found in the database, expected " + updatedUser + " to have been inserted into the database.");
             }
 
             ArrayList<User> allLeftUsers = userManager.getUserWithName("ModifiedNom ModifiedPrenom l");
             if (allLeftUsers.size() != 2)
                 Assert.fail("Expected 2 users with \"ModifiedNom ModifiedPrenom l\" research but got " + allLeftUsers.size());
 
-            User inexistantUser = userManager.getUserWithMail(updatedUser.getMail());
+            User inexistantUser = userManager.getUserWithPseudo(updatedUser.getPseudo());
             if (inexistantUser != null) {
                 Assert.fail("Found user " + inexistantUser + " in the database, expected the user to have been removed from the database.");
             }

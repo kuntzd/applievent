@@ -26,14 +26,6 @@ public class Group {
         }
     }
 
-    public static Group BuildFromEmptyGroup(EmptyGroup emptyGroup, Collection<UserWithPseudo> users){
-        HashMap<String , User> group = new HashMap<>();
-        for(UserWithPseudo user : users){
-            group.put(user.getPseudo(), user.getUser());
-        }
-        return new Group(emptyGroup.getId(), emptyGroup.getName(), group);
-    }
-
     public int getId() {
         return id;
     }
