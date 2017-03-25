@@ -3,4 +3,8 @@
     <string name="texte_accueil">Welcome to this Awesome Homepage</string>
     <string name="description_image_test">"ici on mettra les pubs des sponsors</string>
     <string name="accueil_central_button">NEW EVENT !</string>
+    <string name="userSearchInit">Search Contact</string>
+    <string name="findContact">Find Contact</string>
+    <string name="nom_groupe">Mon Groupe</string>
+    <string name="create_new_group">Create</string>
 </resources>
