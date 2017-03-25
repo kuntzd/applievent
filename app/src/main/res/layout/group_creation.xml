@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+<!--Header contenant l'image et le nom du groupe-->
     <RelativeLayout
         android:id="@+id/groupCreationHeader"
         android:orientation="vertical"
