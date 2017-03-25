@@ -1,9 +1,11 @@
-package com.example.user.applievent;
+package com.example.user.applievent.DatabaseInterface;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+
+import com.example.user.applievent.DatabaseTools.UserIds;
+import com.example.user.applievent.DatabaseTools.UserInGroupIds;
 
 import java.util.ArrayList;
 

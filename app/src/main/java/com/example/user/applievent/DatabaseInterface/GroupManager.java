@@ -1,8 +1,14 @@
-package com.example.user.applievent;
+package com.example.user.applievent.DatabaseInterface;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+
+import com.example.user.applievent.DatabaseTools.EmptyGroup;
+import com.example.user.applievent.DatabaseTools.GroupIds;
+import com.example.user.applievent.DatabaseTools.UserInGroup;
+import com.example.user.applievent.DatabaseTools.UserInGroupIds;
+import com.example.user.applievent.DatabaseTools.UserWithPseudo;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,7 +52,7 @@ public class GroupManager extends Manager {
         return new Group(emptyGroup.getId(), emptyGroup.getName(), group);
     }
 
-    protected GroupManager(Context context, String dataBaseName) {
+    public GroupManager(Context context, String dataBaseName) {
         super(context, dataBaseName);
     }
 

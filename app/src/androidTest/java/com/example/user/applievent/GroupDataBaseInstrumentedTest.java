@@ -3,7 +3,13 @@ package com.example.user.applievent;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.telephony.PhoneNumberUtils;
+
+import com.example.user.applievent.DatabaseInterface.Group;
+import com.example.user.applievent.DatabaseInterface.GroupManager;
+import com.example.user.applievent.DatabaseInterface.User;
+import com.example.user.applievent.DatabaseInterface.UserManager;
+import com.example.user.applievent.DatabaseTools.EmptyGroup;
+import com.example.user.applievent.DatabaseTools.UserWithPseudo;
 
 import org.junit.Assert;
 import org.junit.Test;

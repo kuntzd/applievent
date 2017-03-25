@@ -1,7 +1,9 @@
-package com.example.user.applievent;
+package com.example.user.applievent.DatabaseInterface;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.example.user.applievent.DatabaseTools.DatabaseOpener;
 
 /**
  * Created by user on 04/03/2017.

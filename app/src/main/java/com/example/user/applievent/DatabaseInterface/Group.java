@@ -1,6 +1,7 @@
-package com.example.user.applievent;
+package com.example.user.applievent.DatabaseInterface;
 
-import java.util.Collection;
+import com.example.user.applievent.DatabaseTools.UserWithPseudo;
+
 import java.util.HashMap;
 
 /**

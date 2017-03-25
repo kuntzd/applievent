@@ -2,9 +2,9 @@ package com.example.user.applievent;
 
 import android.test.mock.MockContext;
 
-import org.junit.Test;
+import com.example.user.applievent.DatabaseInterface.UserManager;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 
 /**
