@@ -7,4 +7,6 @@
     <string name="findContact">Find Contact</string>
     <string name="nom_groupe">Mon Groupe</string>
     <string name="create_new_group">Create</string>
+    <string name="name_hint">My Group Name</string>
+    <string name="accueil_group_button">New Group!</string>
 </resources>

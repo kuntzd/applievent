@@ -20,22 +20,33 @@
             android:scaleType="center"
             android:src="@drawable/methodo"/>
 
-        <TextView
+        <EditText
+            android:id="@+id/nom_groupe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/nom_groupe"
             android:gravity="left"
             android:paddingLeft="20px"
             android:paddingTop="20px"
-            android:id="@+id/nom_groupe" />
+            android:hint="@string/name_hint"
+            android:inputType="text"
+            android:focusable="true"
+            android:focusableInTouchMode ="true"
+            android:imeOptions="actionSend"/>
 
     </RelativeLayout>
+
+    <android.support.v7.widget.SearchView
+        android:id="@+id/search_contact_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/groupCreationHeader">
+    </android.support.v7.widget.SearchView>
 
     <ListView
         android:id="@+id/contact_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/groupCreationHeader"
+        android:layout_below="@id/search_contact_list"
         android:paddingTop="20dp"
         android:paddingLeft="50dp">
 
